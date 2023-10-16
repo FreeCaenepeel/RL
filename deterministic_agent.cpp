@@ -33,8 +33,8 @@ const int actions[3][1] = {{0},{1},{-1}};
 //    {1,-1,-1},{1,-1,1},{1,1,0},{1,-1,0},{-1,0,0},{-1,0,1},{-1,0,-1},
 //    {-1,1,1},{-1,1,-1},{-1,-1,-1},{-1,-1,1},{-1,1,0},{-1,-1,0}};
 
-const int N = n_elevators*(n_floors+3) + 2 * n_floors + 2;
-const int W = (n_elevators*(n_floors+3) + 2 * n_floors + 2) * 3;
+const int N = n_elevators*(n_floors+4) + 2 * n_floors + 2;
+const int W = (n_elevators*(n_floors+4) + 2 * n_floors + 2) * 3;
 
 
 // random generator to generate requested floors

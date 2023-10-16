@@ -22,7 +22,7 @@
 
 
 // for one elevator. Size of feature vector = number of input nodes of NN
-const int N1 = 1*(10+3) + 2 * 10 + 2;
+const int N1 = 1*(10+4) + 2 * 10 + 2;
 
 using namespace std;
 
@@ -291,14 +291,14 @@ public:
     
     // construct the neural network for policy
     NN (vector<double> inputs, vector<pair<double,double>> weights) {
-        // input layer contains size of feature vector nodes: n_elevators*(n_floors+3) + 2 * n_floors + 2
+        // input layer contains size of feature vector nodes: n_elevators*(n_floors+4) + 2 * n_floors + 2
         // output later contains number of actions: n_elevator = 1, so 3
         // sigmoid layer
         // softmax
         // ln
         // aggregate to have one output node (doesn't affect adjoints)
-        // number of w_weights: 3 * (n_elevators*(n_floors+3) + 2 * n_floors + 2)
-        // number of b_weights: 3 * (n_elevators*(n_floors+3) + 2 * n_floors + 2)
+        // number of w_weights: 3 * (n_elevators*(n_floors+4) + 2 * n_floors + 2)
+        // number of b_weights: 3 * (n_elevators*(n_floors+4) + 2 * n_floors + 2)
         
         this->nn_function(inputs, weights);
     }
@@ -429,12 +429,12 @@ public:
     // construct the neural network for state value function
     NNStateValue (vector<double> inputs, vector<vector<double>> w_weights, vector<vector<double>> b_weights) {
         
-        // input layer contains length of feature vector of environment: n_elevators*(n_floors+3) + 2 * n_floors + 2
+        // input layer contains length of feature vector of environment: n_elevators*(n_floors+4) + 2 * n_floors + 2
         // hidden layer contains 10 nodes
         // sigmoid layer
         // sum aggregate
-        // number of w_weights: (n_elevators*(n_floors+3) + 2 * n_floors + 2) * 10
-        // number of b_weights: (n_elevators*(n_floors+3) + 2 * n_floors + 2) * 10
+        // number of w_weights: (n_elevators*(n_floors+4) + 2 * n_floors + 2) * 10
+        // number of b_weights: (n_elevators*(n_floors+4) + 2 * n_floors + 2) * 10
         
         this->nn_function(inputs, w_weights, b_weights);
     }

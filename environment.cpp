@@ -28,6 +28,7 @@ public:
     // state parameters
     int floors[n_elevators];                                // current floors of elevators
     int sleep[n_elevators];                                 // sleeping time of elevators
+    int current_movement[n_elevators];                      // current movement of elevator
     int queue_up[n_floors + 1];                             // people waiting to go up
     int queue_down[n_floors + 1];                           // peopple waiting to go down
     int waiting_in_elevator[n_elevators][n_floors+1];       // people inside elevator with requested floors
@@ -44,6 +45,7 @@ public:
             floors[i] = 0;
             full[i] = 0;
             sleep[i] = 0;
+            current_movement[i] = 0;
             for (int j = 0; j <= n_floors; j++) {
                 waiting_in_elevator[i][j] = 0;
             }
@@ -84,6 +86,7 @@ public:
         // empty all elevators
         for (int i = 0; i < n_elevators; i++) {
             this->sleep[i] = 0;
+            this->current_movement[i] = 0;
             for (int j = 0; j <= n_floors; j++) {
                 this->waiting_in_elevator[i][j] = 0;
             }
@@ -111,6 +114,7 @@ public:
         // empty all elevators for test
         for (int i = 0; i < n_elevators; i++) {
             this->sleep[i] = 0;
+            this->current_movement[i] = 0;
             for (int j = 0; j <= n_floors; j++) {
                 this->waiting_in_elevator[i][j] = 0;
             }
@@ -134,6 +138,7 @@ public:
             // if elevator was not sleeping yet, and stops then sleep for 3 steps
             if (action[i] == 0 and this->sleep[i] == 0) {
                 this->sleep[i] = 3;
+                this->current_movement[i] = 0;
             }
             else if (this->sleep[i] > 0) {
                 this->sleep[i] -= 1;
@@ -141,6 +146,7 @@ public:
                 if (this->floors[i] + action[i] > n_floors || this->floors[i] + action[i] < 0) {
                     reward -= 10;
                     }
+                this->current_movement[i] = 0;
             }
             else {
                 // give negative reward for going below 0 or above top floor
@@ -148,6 +154,7 @@ public:
                     reward -= 20;
                     }
                 this->floors[i] = min(max(0,this->floors[i] + action[i]),n_floors);
+                this->current_movement[i] = action[i];
             }
         }
         
@@ -249,7 +256,7 @@ public:
     
     // feature vector of environment
     // serves as input for neural network
-    // for every elevator: sleep time, current floor, for every floor people in elevator that need to go there
+    // for every elevator: sleep time, current floor, current movement, for every floor people in elevator that need to go there
     // for every floor: people wanting to go up
     // for every floor: people wanting to do down
     vector<double> get_feature_vector () {
@@ -258,6 +265,7 @@ public:
         for (int i = 0; i < n_elevators; i ++) {
             d = 0;
             feature_vector.push_back(double(this->sleep[i]));
+            feature_vector.push_back(double(this->current_movement[i]));
             feature_vector.push_back(double( 5 - this->floors[i]));
             for (int j = 0; j <= n_floors; j++) {
                 feature_vector.push_back(double(this->waiting_in_elevator[i][j]));
