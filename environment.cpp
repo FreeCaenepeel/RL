@@ -257,21 +257,21 @@ public:
         int d;
         for (int i = 0; i < n_elevators; i ++) {
             d = 0;
-            feature_vector.push_back(double(this->sleep[i]) + 0.1);
-            feature_vector.push_back(double(this->floors[i]) + 0.1);
+            feature_vector.push_back(double(this->sleep[i]));
+            feature_vector.push_back(double( 5 - this->floors[i]));
             for (int j = 0; j <= n_floors; j++) {
-                feature_vector.push_back(double(this->waiting_in_elevator[i][j]) + 0.1);
+                feature_vector.push_back(double(this->waiting_in_elevator[i][j]));
             }
         }
         for (int j = 0; j <= n_floors; j++) {
-            feature_vector.push_back(double(this->queue_up[j]) + 0.1);
+            feature_vector.push_back(double((n_floors - j) * this->queue_up[j]));
         }
         for (int j = 0; j <= n_floors; j++) {
-            feature_vector.push_back(double(this->queue_down[j]) + 0.1);
+            feature_vector.push_back(double(- j * this->queue_down[j]));
         }
     
         // sigmoid function to avoid adjoint blow ups
-        this->sigmoid(feature_vector);
+      //  this->sigmoid(feature_vector);
         return feature_vector;
     }
     
@@ -322,6 +322,7 @@ public:
             for (int j = 0; j < 10; j ++) {
                 w_temp_vec.push_back(this->network.w_weight_nodes[i][j]->myAdjoint);
                 b_temp_vec.push_back(this->network.b_weight_nodes[i][j]->myAdjoint);
+           //     std::cout << " adjoint " << this->network.b_weight_nodes[i][j]->myAdjoint;
             }
             w_adjoints.push_back(w_temp_vec);
             b_adjoints.push_back(b_temp_vec);

@@ -25,7 +25,7 @@ public:
     double learning_rate = 0.001;
     double average_reward;
     int reward;
-    double learning_rate_reward = 0.1;         // learning rate for reward
+    double learning_rate_reward = 0.01;         // learning rate for reward
     
     ActorCritic (vector<double> inputs, vector<pair<double,double>> weights, vector<double> env_inputs, vector<vector<double>> env_w_weights, vector<vector<double>> env_b_weights):
         env(env_inputs, env_w_weights, env_b_weights),
@@ -174,7 +174,7 @@ public:
 
             tie(action, placeholder) = this->policy(false);
             tie(probabilities, adjoints) = placeholder;
-        //    std::cout << "action " << action[0] << endl;
+            std::cout << "floor " << this->env.floors[0] << "and action " << action[0] << endl;
             std::cout << " probs " << probabilities[0] << " " << probabilities[1] << " " << probabilities[2] << endl;
             this->reward += this->env.next_state(action);
         //    this->env.pretty_print();
